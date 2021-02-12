@@ -16,8 +16,56 @@ class HBNBCommand(Cmd):
         pass
 
     def do_cowsay(self, arg):
-        """implementing cowsay test"""
-        cowsay.cow(arg)
+        """USAGE: cowsay [cow_name, DEFAULT=cow] <string>"""
+        word_list = []
+        word = ""
+        for char in arg:
+            if char == " ":
+                if word != " ":
+                    word_list.append(word)
+                    word = ""
+            else:
+                word += char
+        word_list.append(word)
+        og_arg = arg
+        arg = ""
+        for index in range(0, len(word_list)):
+            if (index != 0):
+                arg += word_list[index]
+            if (index < len(word_list) - 1):
+                arg += " "
+        if (word_list[0] == "beavis"):
+            cowsay.beavis(arg)
+        elif (word_list[0] == "cheese"):
+            cowsay.cheese(arg)
+        elif (word_list[0] == "daemon"):
+            cowsay.daemon(arg)
+        elif (word_list[0] == "cow"):
+            cowsay.cow(arg)
+        elif (word_list[0] == "dragon"):
+            cowsay.dragon(arg)
+        elif (word_list[0] == "ghostbusters"):
+            cowsay.ghostbusters(arg)
+        elif (word_list[0] == "kitty"):
+            cowsay.kitty(arg)
+        elif (word_list[0] == "meow"):
+            cowsay.meow(arg)
+        elif (word_list[0] == "milk"):
+            cowsay.milk(arg)
+        elif (word_list[0] == "pig"):
+            cowsay.pig(arg)
+        elif (word_list[0] == "stegosaurus"):
+            cowsay.stegosaurus(arg)
+        elif (word_list[0] == "stimpy"):
+            cowsay.stimpy(arg)
+        elif (word_list[0] == "turkey"):
+            cowsay.turkey(arg)
+        elif (word_list[0] == "turtle"):
+            cowsay.turtle(arg)
+        elif (word_list[0] == "tux"):
+            cowsay.tux(arg)
+        else:
+            cowsay.cow(og_arg)
 
     def do_create(self, arg):
         """Creates a new instance"""
