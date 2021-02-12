@@ -10,20 +10,26 @@ class HBNBCommand(Cmd):
         return True
 
     def do_EOF(self, arg):
+        """end of file"""
         return True
 
     def emptyline(self):
+        """empty line"""
         pass
 
+    def help_cowsay(self):
+        """cowsay help"""
+        print("""USAGE: cowsay [cow_name] PHRASE""")
+        print("cow_name options:\nbeavis\ncheese\ndaemon\ncow (default)\ndragon\nghostbusters\nkitty\nmeow\nmilk\npig\nstegosaurus\nstimpy\nturkey\nturtle\ntux\n")
+    
     def do_cowsay(self, arg):
-        """USAGE: cowsay [cow_name, DEFAULT=cow] <string>"""
+        """cowsay"""
         word_list = []
         word = ""
         for char in arg:
             if char == " ":
-                if word != " ":
-                    word_list.append(word)
-                    word = ""
+                word_list.append(word)
+                word = ""
             else:
                 word += char
         word_list.append(word)
