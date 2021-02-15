@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from cmd import Cmd
+from models import storage
 from models.base_model import BaseModel
 import cowsay
 import os
@@ -31,16 +32,77 @@ class HBNBCommand(Cmd):
             print("** class doesn't exist **")
     
     def do_show(self, args):
-        """create an instanc"""
-        if (args == "BaseModel"):
-            instance = BaseModel()
-            print(instance.id)
-        elif (len(args) == 0):
+        """Show contents of a class based on class and id"""
+        word_list = args.split()
+        if (len(word_list) == 0):
             print("** class name missing **")
+        elif (len(word_list) == 1):
+            print("** instance id missing **")
+        elif word_list[0] == "BaseModel":
+            search = "{}.{}".format(word_list[0], word_list[1])
+            objdict = storage.all()
+            if search in objdict.keys():
+                print(objdict[search])
+            else:
+                print("** no instance found **")
+            
+            
+    def do_all(self, args):
+        """Shows the contents of all instances"""
+        word_list = args.split()
+        if (len(word_list) == 0):
+            print(storage.all())
+        elif (len(word_list) == 1 and word_list[0] == "BaseModel"):
+            print(storage.all())
         else:
             print("** class doesn't exist **")
             
-            
+    def do_destroy(self, args):
+        """Deletes an instance based on the class name and id"""
+        word_list = args.split()
+        if (len(word_list) == 0):
+            print("** class name missing **")
+        elif (len(word_list) == 1):
+            print("** instance id missing **")
+        elif word_list[0] == "BaseModel":
+            search = "{}.{}".format(word_list[0], word_list[1])
+            objdict = storage.all()
+            if search in objdict.keys():
+                del objdict[search]
+            else:
+                print("** no instance found **")
+        
+
+    def do_update(self, args):
+        """Updates an instance based on the class name and id"""
+        untouchable = ["id", "created_at", "updated_at"]
+        word_list = args.split()
+        if (len(word_list) == 0):
+            print("** class name missing **")
+        elif (len(word_list) == 1):
+            print("** instance id missing **")
+        elif len(word_list) == 2:
+            print("** attribute name missing **")
+        elif len(word_list) == 3:
+            print("** value missing **")
+        elif word_list[0] == "BaseModel":
+            search = "{}.{}".format(word_list[0], word_list[1])
+            objdict = storage.all()
+            if search in objdict.keys():
+                instance_dict = objdict[search]
+                if word_list[2] in instance_dict.keys() and word_list[2]:
+                    if word_list[2] not in untouchable:
+                        instance_dict[word_list[2]] = word_list[3]
+                    else:
+                        print("Cannot change value {}".format(word_list[2]))
+                else:
+                    instance_dict[word_list[2]] = word_list[3]
+            else:
+                print("** no instance found **")
+        else:
+            print("** class doesn't exist **")
+        
+        
 
     def do_clear(self, args):
         """clear line"""
