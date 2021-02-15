@@ -93,10 +93,12 @@ class HBNBCommand(Cmd):
                 if word_list[2] in instance_dict.keys() and word_list[2]:
                     if word_list[2] not in untouchable:
                         instance_dict[word_list[2]] = word_list[3]
+                        storage.save()
                     else:
                         print("Cannot change value {}".format(word_list[2]))
                 else:
                     instance_dict[word_list[2]] = word_list[3]
+                    storage.save()
             else:
                 print("** no instance found **")
         else:
