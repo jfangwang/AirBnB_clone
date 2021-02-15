@@ -1,15 +1,17 @@
 #!/usr/bin/python3
 from cmd import Cmd
+from models.base_model import BaseModel
 import cowsay
+import os
 
 class HBNBCommand(Cmd):
     """HBNBC"""
     prompt = '(hbnb) '
-    def do_quit(self, arg):
+    def do_quit(self, args):
         """Quit command to exit the program"""
         return True
 
-    def do_EOF(self, arg):
+    def do_EOF(self, args):
         """end of file"""
         return True
 
@@ -17,70 +19,89 @@ class HBNBCommand(Cmd):
         """empty line"""
         pass
 
+    def do_create(self, args):
+        """create an instance"""
+        if (args == "BaseModel"):
+            instance = BaseModel()
+            instance.save()
+            print(instance.id)
+        elif (len(args) == 0):
+            print("** class name missing **")
+        else:
+            print("** class doesn't exist **")
+    
+    def do_show(self, args):
+        """create an instanc"""
+        if (args == "BaseModel"):
+            instance = BaseModel()
+            print(instance.id)
+        elif (len(args) == 0):
+            print("** class name missing **")
+        else:
+            print("** class doesn't exist **")
+            
+            
+
+    def do_clear(self, args):
+        """clear line"""
+        clear = lambda: os.system('clear') #on Linux System
+        clear()
+
     def help_cowsay(self):
         """cowsay help"""
         print("""USAGE: cowsay [cow_name] PHRASE""")
         print("cow_name options:\nbeavis\ncheese\ndaemon\ncow (default)\ndragon\nghostbusters\nkitty\nmeow\nmilk\npig\nstegosaurus\nstimpy\nturkey\nturtle\ntux\n")
     
-    def do_cowsay(self, arg):
+    def do_cowsay(self, args):
         """cowsay"""
         word_list = []
         word = ""
-        for char in arg:
+        for char in args:
             if char == " ":
                 word_list.append(word)
                 word = ""
             else:
                 word += char
         word_list.append(word)
-        og_arg = arg
-        arg = ""
+        og_args = args
+        args = ""
         for index in range(0, len(word_list)):
             if (index != 0):
-                arg += word_list[index]
+                args += word_list[index]
             if (index < len(word_list) - 1):
-                arg += " "
+                args += " "
         if (word_list[0] == "beavis"):
-            cowsay.beavis(arg)
+            cowsay.beavis(args)
         elif (word_list[0] == "cheese"):
-            cowsay.cheese(arg)
+            cowsay.cheese(args)
         elif (word_list[0] == "daemon"):
-            cowsay.daemon(arg)
+            cowsay.daemon(args)
         elif (word_list[0] == "cow"):
-            cowsay.cow(arg)
+            cowsay.cow(args)
         elif (word_list[0] == "dragon"):
-            cowsay.dragon(arg)
+            cowsay.dragon(args)
         elif (word_list[0] == "ghostbusters"):
-            cowsay.ghostbusters(arg)
+            cowsay.ghostbusters(args)
         elif (word_list[0] == "kitty"):
-            cowsay.kitty(arg)
+            cowsay.kitty(args)
         elif (word_list[0] == "meow"):
-            cowsay.meow(arg)
+            cowsay.meow(args)
         elif (word_list[0] == "milk"):
-            cowsay.milk(arg)
+            cowsay.milk(args)
         elif (word_list[0] == "pig"):
-            cowsay.pig(arg)
+            cowsay.pig(args)
         elif (word_list[0] == "stegosaurus"):
-            cowsay.stegosaurus(arg)
+            cowsay.stegosaurus(args)
         elif (word_list[0] == "stimpy"):
-            cowsay.stimpy(arg)
+            cowsay.stimpy(args)
         elif (word_list[0] == "turkey"):
-            cowsay.turkey(arg)
+            cowsay.turkey(args)
         elif (word_list[0] == "turtle"):
-            cowsay.turtle(arg)
+            cowsay.turtle(args)
         elif (word_list[0] == "tux"):
-            cowsay.tux(arg)
+            cowsay.tux(args)
         else:
-            cowsay.cow(og_arg)
+            cowsay.cow(og_args)
 
-    def do_create(self, arg):
-        """Creates a new instance"""
-        if str(arg) is "base":
-            print("it works")
-        elif not arg:
-            print("** class name missing **")
-        else:
-            print("** class doesn't exist **")
-        
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
