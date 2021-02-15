@@ -5,6 +5,9 @@ from models.base_model import BaseModel
 import cowsay
 import os
 
+class_dict = {"BaseModel": BaseModel
+                #"State": State, "City": City, "Amenity": Amenity, "Place": Place, "Review": Review
+             }
 class HBNBCommand(Cmd):
     """HBNBC"""
     prompt = '(hbnb) '
@@ -20,17 +23,19 @@ class HBNBCommand(Cmd):
         """empty line"""
         pass
 
+# ----------------------CREATE---------------------------------------
     def do_create(self, args):
         """create an instance"""
-        if (args == "BaseModel"):
-            instance = BaseModel()
+        if args in class_dict:
+            instance = class_dict[args]()
             instance.save()
             print(instance.id)
         elif (len(args) == 0):
             print("** class name missing **")
         else:
             print("** class doesn't exist **")
-    
+
+# ----------------------SHOW---------------------------------------
     def do_show(self, args):
         """Show contents of a class based on class and id"""
         word_list = args.split()
@@ -38,7 +43,7 @@ class HBNBCommand(Cmd):
             print("** class name missing **")
         elif (len(word_list) == 1):
             print("** instance id missing **")
-        elif word_list[0] == "BaseModel":
+        elif word_list[0] in class_dict:
             search = "{}.{}".format(word_list[0], word_list[1])
             objdict = storage.all()
             if search in objdict.keys():
@@ -47,16 +52,18 @@ class HBNBCommand(Cmd):
                 print("** no instance found **")
             
             
+# ----------------------ALL---------------------------------------
     def do_all(self, args):
         """Shows the contents of all instances"""
         word_list = args.split()
         if (len(word_list) == 0):
             print(storage.all())
-        elif (len(word_list) == 1 and word_list[0] == "BaseModel"):
+        elif (len(word_list) == 1 and word_list[0] in class_dict):
             print(storage.all())
         else:
             print("** class doesn't exist **")
             
+# ----------------------DESTROY---------------------------------------
     def do_destroy(self, args):
         """Deletes an instance based on the class name and id"""
         word_list = args.split()
@@ -64,7 +71,7 @@ class HBNBCommand(Cmd):
             print("** class name missing **")
         elif (len(word_list) == 1):
             print("** instance id missing **")
-        elif word_list[0] == "BaseModel":
+        elif word_list[0] in class_dict:
             search = "{}.{}".format(word_list[0], word_list[1])
             objdict = storage.all()
             if search in objdict.keys():
@@ -72,7 +79,7 @@ class HBNBCommand(Cmd):
             else:
                 print("** no instance found **")
         
-
+# ----------------------UPDATE---------------------------------------
     def do_update(self, args):
         """Updates an instance based on the class name and id"""
         untouchable = ["id", "created_at", "updated_at"]
@@ -85,7 +92,7 @@ class HBNBCommand(Cmd):
             print("** attribute name missing **")
         elif len(word_list) == 3:
             print("** value missing **")
-        elif word_list[0] == "BaseModel":
+        elif word_list[0] in class_dict:
             search = "{}.{}".format(word_list[0], word_list[1])
             objdict = storage.all()
             if search in objdict.keys():
@@ -104,8 +111,7 @@ class HBNBCommand(Cmd):
         else:
             print("** class doesn't exist **")
         
-        
-
+# ----------------------FUN_ADD_ONS---------------------------------------
     def do_clear(self, args):
         """clear line"""
         clear = lambda: os.system('clear') #on Linux System
