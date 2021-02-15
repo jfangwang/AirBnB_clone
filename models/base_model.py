@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Base Model File"""
 from datetime import datetime
-from models.__init__ import storage
+import models
 import uuid
 
 
@@ -26,7 +26,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self)
+            models.storage.new(self) # PROBLEM
         else:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
@@ -51,8 +51,9 @@ class BaseModel:
         will save our FileStorage.__objects dict (which saves all-
         -of our objects for application) to BaseModels.json
         """
+        # Updates storage instance before JSON serialization to account for changes made during instances active time
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.save()
 
 # ----------TO_DICT-----------------------------------------
     def to_dict(self):
@@ -64,5 +65,5 @@ class BaseModel:
         final_dict = dict(self.__dict__)
         final_dict["created_at"] = self.created_at.isoformat()
         final_dict["updated_at"] = self.updated_at.isoformat()
-        final_dict["__class__"] = "BaseModel"
+        final_dict["__class__"] = self.__class__.__name__
         return final_dict
