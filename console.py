@@ -2,11 +2,23 @@
 from cmd import Cmd
 from models import storage
 from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
+from models.base_model import BaseModel
 import cowsay
 import os
 
-class_dict = {"BaseModel": BaseModel
-                #"State": State, "City": City, "Amenity": Amenity, "Place": Place, "Review": Review
+class_dict = {"BaseModel": BaseModel, 
+                "State": State, 
+                "City": City, 
+                "Amenity": Amenity, 
+                "Place": Place, 
+                "Review": Review,
+                "User": User
              }
 class HBNBCommand(Cmd):
     """HBNBC"""
@@ -45,12 +57,11 @@ class HBNBCommand(Cmd):
             print("** instance id missing **")
         elif word_list[0] in class_dict:
             search = "{}.{}".format(word_list[0], word_list[1])
-            objdict = storage.all()
+            objdict = storage.all().to_dict()
             if search in objdict.keys():
                 print(objdict[search])
             else:
                 print("** no instance found **")
-            
             
 # ----------------------ALL---------------------------------------
     def do_all(self, args):
@@ -60,6 +71,9 @@ class HBNBCommand(Cmd):
             print(storage.all())
         elif (len(word_list) == 1 and word_list[0] in class_dict):
             print(storage.all())
+            for a in storage.all():
+                for b in a:
+                    print(b)
         else:
             print("** class doesn't exist **")
             
