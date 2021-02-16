@@ -116,15 +116,13 @@ class HBNBCommand(cmd.Cmd):
         instance_exist = 0
         if len(word_list) == 0:
             print("** class name missing **")
-        elif word_list[0] not in class_dict:
-            print("** class doesn't exist **")
         elif len(word_list == 1):
             print("** instance id missing **")
         elif len(word_list) == 2:
             print("** attribute name missing **")
         elif len(word_list) == 3:
             print("** value missing **")
-        else:
+        elif word_list[0] in class_dict:
             search = "{}.{}".format(word_list[0], word_list[1])
             for key, val in storage.all().items():
                 if key == search:
@@ -133,6 +131,8 @@ class HBNBCommand(cmd.Cmd):
                     instance_exist = 1
             if instance_exist == 0:
                 print("** no instance found **")
+        else:
+            print("** class doesn't exist **")
             
 
 # ----------------------FUN_ADD_ONS---------------------------------------
