@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from cmd import Cmd
+import cmd
 from models import storage
 from models.base_model import BaseModel
 from models.amenity import Amenity
@@ -22,7 +22,7 @@ class_dict = {"BaseModel": BaseModel,
               }
 
 
-class HBNBCommand(Cmd):
+class HBNBCommand(cmd.Cmd):
     """HBNBC"""
     prompt = '(hbnb) '
 
@@ -41,12 +41,12 @@ class HBNBCommand(Cmd):
 # ----------------------CREATE---------------------------------------
     def do_create(self, args):
         """create an instance"""
-        if args in class_dict:
+        if (len(args) == 0):
+            print("** class name missing **")
+        elif args in class_dict:
             instance = class_dict[args]()
             instance.save()
             print(instance.id)
-        elif (len(args) == 0):
-            print("** class name missing **")
         else:
             print("** class doesn't exist **")
 
@@ -70,12 +70,17 @@ class HBNBCommand(Cmd):
     def do_all(self, args):
         """Shows the contents of all instances"""
         word_list = args.split()
+        output_list = []
         if (len(word_list) == 0):
             for a in storage.all():
-                print(storage.all()[a])
+                output_list.append(str(storage.all()[a]))
+            print(output_list)
         elif (len(word_list) == 1 and word_list[0] in class_dict):
             for a in storage.all():
-                print(storage.all()[a])
+                word = a.split(".")
+                if word[0] == word_list[0]:
+                    output_list.append(str(storage.all()[a]))
+            print(output_list)
         else:
             print("** class doesn't exist **")
 
@@ -86,7 +91,10 @@ class HBNBCommand(Cmd):
         if (len(word_list) == 0):
             print("** class name missing **")
         elif (len(word_list) == 1):
-            print("** instance id missing **")
+            if word_list[0] in class_dict:
+                print("** instance id missing **")
+            else:
+                print("** class doesn't exist **")
         elif word_list[0] in class_dict:
             search = "{}.{}".format(word_list[0], word_list[1])
             objdict = storage.all()
@@ -94,6 +102,15 @@ class HBNBCommand(Cmd):
                 del objdict[search]
             else:
                 print("** no instance found **")
+
+    def do_type(self, args):
+        """testing the type"""
+        if len(args) == 0:
+            print("no args")
+        elif args.isdigit():
+            print("{}, type: digit".format(args))
+        else:
+            print("{}, type: {}".format(args, type(args)))
 
 # ----------------------UPDATE---------------------------------------
     def do_update(self, args):
@@ -103,9 +120,19 @@ class HBNBCommand(Cmd):
         if (len(word_list) == 0):
             print("** class name missing **")
         elif (len(word_list) == 1):
-            print("** instance id missing **")
+            if word_list[0] in class_dict:
+                print("** instance id missing **")
+            else:
+                print("** class doesn't exist **")
         elif len(word_list) == 2:
-            print("** attribute name missing **")
+            search = "{}.{}".format(word_list[0], word_list[1])
+            flag = 0
+            for a in storage.all().keys():
+                if search == a:
+                    print("** attribute name missing **")
+                    flag = 1
+            if flag == 0:
+                print("** no instance found **")
         elif len(word_list) == 3:
             print("** value missing **")
         elif word_list[0] in class_dict:
