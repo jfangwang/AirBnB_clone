@@ -104,7 +104,7 @@ class FileStorage:
 
         At the end of the method __objects will have been restored
         from the json file with data from last run.
-        
+
         JSON load -> <class 'dict'> -> <class 'BaseModel'>
         """
         json_from = dict()
