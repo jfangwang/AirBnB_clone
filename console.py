@@ -48,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif arg in class_dict:
             instance = class_dict[arg]()
-            instance.save()
+            storage.save()
             print(instance.id)
         else:
             print("** class doesn't exist **")
@@ -116,11 +116,10 @@ class HBNBCommand(cmd.Cmd):
         instance_exist = 0
         if len(word_list) == 0:
             print("** class name missing **")
-        elif len(word_list) == 1:
-            if word_list[0] not in class_dict:
-                print("** class doesn't exist **")
-            else:
-                print("** instance id missing **")
+        elif word_list[0] not in class_dict:
+            print("** class doesn't exist **")
+        elif len(word_list == 1):
+            print("** instance id missing **")
         elif len(word_list) == 2:
             print("** attribute name missing **")
         elif len(word_list) == 3:
@@ -130,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
             for key, val in storage.all().items():
                 if key == search:
                     setattr(val, word_list[2], str(word_list[3]))
-                    val.save()
+                    storage.save()
                     instance_exist = 1
             if instance_exist == 0:
                 print("** no instance found **")
