@@ -57,7 +57,7 @@ class HBNBCommand(Cmd):
             print("** instance id missing **")
         elif word_list[0] in class_dict:
             search = "{}.{}".format(word_list[0], word_list[1])
-            objdict = storage.all().to_dict()
+            objdict = storage.all()
             if search in objdict.keys():
                 print(objdict[search])
             else:
@@ -68,12 +68,11 @@ class HBNBCommand(Cmd):
         """Shows the contents of all instances"""
         word_list = args.split()
         if (len(word_list) == 0):
-            print(storage.all())
-        elif (len(word_list) == 1 and word_list[0] in class_dict):
-            print(storage.all())
             for a in storage.all():
-                for b in a:
-                    print(b)
+                print(storage.all()[a])
+        elif (len(word_list) == 1 and word_list[0] in class_dict):
+            for a in storage.all():
+                print(storage.all()[a])
         else:
             print("** class doesn't exist **")
             
