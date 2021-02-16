@@ -136,9 +136,9 @@ class HBNBCommand(Cmd):
     def help_cowsay(self):
         """cowsay help"""
         print("""USAGE: cowsay [cow_name] PHRASE""")
-        print("cow_name options\nbeavis\ncheese\ndaemon\ncow(default)\n
-              dragon\nghostbusters\nkitty\nmeow\nmilk\npig\nstegosaurus\n
-              stimpy\nturkey\nturtle\ntux\n")
+        print("cow_name options\nbeavis\ncheese\ndaemon\ncow(default)")
+        print("dragon\nghostbusters\nkitty\nmeow\nmilk\npig\nstegosaurus\n")
+        print("stimpy\nturkey\nturtle\ntux\n")
 
     def do_cowsay(self, args):
         """cowsay"""
