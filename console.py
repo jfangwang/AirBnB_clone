@@ -59,9 +59,11 @@ class HBNBCommand(cmd.Cmd):
         word_list = arg.split()
         if (len(word_list) == 0):
             print("** class name missing **")
+        elif word_list[0] not in class_dict:
+            print("** class doesn't exist **")
         elif (len(word_list) == 1):
             print("** instance id missing **")
-        elif word_list[0] in class_dict:
+        else:
             search = "{}.{}".format(word_list[0], word_list[1])
             objdict = storage.all()
             if search in objdict.keys():
@@ -78,7 +80,7 @@ class HBNBCommand(cmd.Cmd):
             for a in storage.all():
                 output_list.append(str(storage.all()[a]))
             print(output_list)
-        elif (len(word_list) == 1 and word_list[0] in class_dict):
+        elif word_list[0] in class_dict:
             for a in storage.all():
                 word = a.split(".")
                 if word[0] == word_list[0]:
@@ -93,16 +95,16 @@ class HBNBCommand(cmd.Cmd):
         word_list = arg.split()
         if (len(word_list) == 0):
             print("** class name missing **")
-        elif (len(word_list) == 1):
-            if word_list[0] in class_dict:
-                print("** instance id missing **")
-            else:
-                print("** class doesn't exist **")
-        elif word_list[0] in class_dict:
+        elif word_list[0] not in class_dict:
+            print("** class doesn't exist **")
+        elif len(word_list) == 1:
+            print("** instance id missing **")
+        else:
             search = "{}.{}".format(word_list[0], word_list[1])
             objdict = storage.all()
             if search in objdict.keys():
                 del objdict[search]
+                storage.save()
             else:
                 print("** no instance found **")
 
@@ -127,7 +129,6 @@ class HBNBCommand(cmd.Cmd):
             search = "{}.{}".format(word_list[0], word_list[1])
             for key, val in storage.all().items():
                 if key == search:
-                    
                     setattr(val, word_list[2], str(word_list[3]))
                     val.save()
                     instance_exist = 1
