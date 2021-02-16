@@ -139,22 +139,12 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
         elif word_list[0] in class_dict:
             search = "{}.{}".format(word_list[0], word_list[1])
-            objdict = storage.all()
-            if search in objdict.keys():
-                instance_dict = objdict[search]
-                if word_list[2] in instance_dict.keys() and word_list[2]:
-                    if word_list[2] not in untouchable:
-                        instance_dict[word_list[2]] = word_list[3]
-                        storage.save()
-                    else:
-                        print("Cannot change value {}".format(word_list[2]))
+            for key, val in storage.all().items():
+                if word_list[2] not in untouchable:
+                    setattr(val, word_list[2], word_list[3])
+                    val.save()
                 else:
-                    instance_dict[word_list[2]] = word_list[3]
-                    storage.save()
-            else:
-                print("** no instance found **")
-        else:
-            print("** class doesn't exist **")
+                    print("you cannot change attribute '{}'".format(word_list[2]))
 
 # ----------------------FUN_ADD_ONS---------------------------------------
     def do_clear(self, arg):
