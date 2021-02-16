@@ -12,6 +12,7 @@ from models.user import User
 from models.base_model import BaseModel
 import cowsay
 import os
+import shlex
 
 class_dict = {"BaseModel": BaseModel,
               "State": State,
@@ -109,7 +110,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, arg):
         """Updates an instance based on the class name and id"""
         untouchable = ["id", "created_at", "updated_at"]
-        word_list = arg.split()
+        word_list = shlex.split(arg)
         instance_exist = 0
         if len(word_list) == 0:
             print("** class name missing **")
@@ -126,7 +127,8 @@ class HBNBCommand(cmd.Cmd):
             search = "{}.{}".format(word_list[0], word_list[1])
             for key, val in storage.all().items():
                 if key == search:
-                    setattr(val, word_list[2], word_list[3])
+                    
+                    setattr(val, word_list[2], str(word_list[3]))
                     val.save()
                     instance_exist = 1
             if instance_exist == 0:
