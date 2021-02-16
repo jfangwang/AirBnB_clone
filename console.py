@@ -105,46 +105,33 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
-    def do_type(self, arg):
-        """testing the type"""
-        if len(arg) == 0:
-            print("no arg")
-        elif arg.isdigit():
-            print("{}, type: digit".format(arg))
-        else:
-            print("{}, type: {}".format(arg, type(args)))
-
 # ----------------------UPDATE---------------------------------------
     def do_update(self, arg):
         """Updates an instance based on the class name and id"""
         untouchable = ["id", "created_at", "updated_at"]
         word_list = arg.split()
-        if (len(word_list) == 0):
+        instance_exist = 0
+        if len(word_list) == 0:
             print("** class name missing **")
-        elif (len(word_list) == 1):
-            if word_list[0] in class_dict:
-                print("** instance id missing **")
-            else:
+        elif len(word_list) == 1:
+            if word_list[0] not in class_dict:
                 print("** class doesn't exist **")
+            else:
+                print("** instance id missing **")
         elif len(word_list) == 2:
-            search = "{}.{}".format(word_list[0], word_list[1])
-            flag = 0
-            for a in storage.all().keys():
-                if search == a:
-                    print("** attribute name missing **")
-                    flag = 1
-            if flag == 0:
-                print("** no instance found **")
+            print("** attribute name missing **")
         elif len(word_list) == 3:
             print("** value missing **")
-        elif word_list[0] in class_dict:
+        else:
             search = "{}.{}".format(word_list[0], word_list[1])
             for key, val in storage.all().items():
-                if word_list[2] not in untouchable:
+                if key == search:
                     setattr(val, word_list[2], word_list[3])
                     val.save()
-                else:
-                    print("you cannot change attribute '{}'".format(word_list[2]))
+                    instance_exist = 1
+            if instance_exist == 0:
+                print("** no instance found **")
+            
 
 # ----------------------FUN_ADD_ONS---------------------------------------
     def do_clear(self, arg):
