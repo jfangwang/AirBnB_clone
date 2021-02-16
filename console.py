@@ -116,11 +116,10 @@ class HBNBCommand(cmd.Cmd):
         instance_exist = 0
         if len(word_list) == 0:
             print("** class name missing **")
+        elif word_list[0] not in class_dict:
+            print("** class doesn't exist **")
         elif len(word_list) == 1:
-            if word_list[0] not in class_dict:
-                print("** class doesn't exist **")
-            else:
-                print("** instance id missing **")
+            print("** instance id missing **")
         elif len(word_list) == 2:
             print("** attribute name missing **")
         elif len(word_list) == 3:
