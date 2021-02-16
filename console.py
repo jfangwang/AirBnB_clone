@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Console"""
 import cmd
 from models import storage
 from models.base_model import BaseModel
@@ -24,13 +25,14 @@ class_dict = {"BaseModel": BaseModel,
 
 class HBNBCommand(cmd.Cmd):
     """HBNBC"""
+
     prompt = '(hbnb) '
 
-    def do_quit(self, args):
+    def do_quit(self, arg):
         """Quit command to exit the program"""
         return True
 
-    def do_EOF(self, args):
+    def do_EOF(self, arg):
         """end of file"""
         return True
 
@@ -39,21 +41,21 @@ class HBNBCommand(cmd.Cmd):
         pass
 
 # ----------------------CREATE---------------------------------------
-    def do_create(self, args):
+    def do_create(self, arg):
         """create an instance"""
-        if (len(args) == 0):
+        if (len(arg) == 0):
             print("** class name missing **")
-        elif args in class_dict:
-            instance = class_dict[args]()
+        elif arg in class_dict:
+            instance = class_dict[arg]()
             instance.save()
             print(instance.id)
         else:
             print("** class doesn't exist **")
 
 # ----------------------SHOW---------------------------------------
-    def do_show(self, args):
+    def do_show(self, arg):
         """Show contents of a class based on class and id"""
-        word_list = args.split()
+        word_list = arg.split()
         if (len(word_list) == 0):
             print("** class name missing **")
         elif (len(word_list) == 1):
@@ -67,9 +69,9 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
 # ----------------------ALL---------------------------------------
-    def do_all(self, args):
+    def do_all(self, arg):
         """Shows the contents of all instances"""
-        word_list = args.split()
+        word_list = arg.split()
         output_list = []
         if (len(word_list) == 0):
             for a in storage.all():
@@ -85,9 +87,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
 # ----------------------DESTROY---------------------------------------
-    def do_destroy(self, args):
+    def do_destroy(self, arg):
         """Deletes an instance based on the class name and id"""
-        word_list = args.split()
+        word_list = arg.split()
         if (len(word_list) == 0):
             print("** class name missing **")
         elif (len(word_list) == 1):
@@ -103,20 +105,20 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
-    def do_type(self, args):
+    def do_type(self, arg):
         """testing the type"""
-        if len(args) == 0:
-            print("no args")
-        elif args.isdigit():
-            print("{}, type: digit".format(args))
+        if len(arg) == 0:
+            print("no arg")
+        elif arg.isdigit():
+            print("{}, type: digit".format(arg))
         else:
-            print("{}, type: {}".format(args, type(args)))
+            print("{}, type: {}".format(arg, type(args)))
 
 # ----------------------UPDATE---------------------------------------
-    def do_update(self, args):
+    def do_update(self, arg):
         """Updates an instance based on the class name and id"""
         untouchable = ["id", "created_at", "updated_at"]
-        word_list = args.split()
+        word_list = arg.split()
         if (len(word_list) == 0):
             print("** class name missing **")
         elif (len(word_list) == 1):
@@ -155,7 +157,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
 # ----------------------FUN_ADD_ONS---------------------------------------
-    def do_clear(self, args):
+    def do_clear(self, arg):
         """clear line"""
         def clear(): os.system('clear')
         clear()
@@ -167,56 +169,56 @@ class HBNBCommand(cmd.Cmd):
         print("dragon\nghostbusters\nkitty\nmeow\nmilk\npig\nstegosaurus\n")
         print("stimpy\nturkey\nturtle\ntux\n")
 
-    def do_cowsay(self, args):
+    def do_cowsay(self, arg):
         """cowsay"""
         word_list = []
         word = ""
-        for char in args:
+        for char in arg:
             if char == " ":
                 word_list.append(word)
                 word = ""
             else:
                 word += char
         word_list.append(word)
-        og_args = args
-        args = ""
+        og_arg = arg
+        arg = ""
         for index in range(0, len(word_list)):
             if (index != 0):
-                args += word_list[index]
+                arg += word_list[index]
             if (index < len(word_list) - 1):
-                args += " "
+                arg += " "
         if (word_list[0] == "beavis"):
-            cowsay.beavis(args)
+            cowsay.beavis(arg)
         elif (word_list[0] == "cheese"):
-            cowsay.cheese(args)
+            cowsay.cheese(arg)
         elif (word_list[0] == "daemon"):
-            cowsay.daemon(args)
+            cowsay.daemon(arg)
         elif (word_list[0] == "cow"):
-            cowsay.cow(args)
+            cowsay.cow(arg)
         elif (word_list[0] == "dragon"):
-            cowsay.dragon(args)
+            cowsay.dragon(arg)
         elif (word_list[0] == "ghostbusters"):
-            cowsay.ghostbusters(args)
+            cowsay.ghostbusters(arg)
         elif (word_list[0] == "kitty"):
-            cowsay.kitty(args)
+            cowsay.kitty(arg)
         elif (word_list[0] == "meow"):
-            cowsay.meow(args)
+            cowsay.meow(arg)
         elif (word_list[0] == "milk"):
-            cowsay.milk(args)
+            cowsay.milk(arg)
         elif (word_list[0] == "pig"):
-            cowsay.pig(args)
+            cowsay.pig(arg)
         elif (word_list[0] == "stegosaurus"):
-            cowsay.stegosaurus(args)
+            cowsay.stegosaurus(arg)
         elif (word_list[0] == "stimpy"):
-            cowsay.stimpy(args)
+            cowsay.stimpy(arg)
         elif (word_list[0] == "turkey"):
-            cowsay.turkey(args)
+            cowsay.turkey(arg)
         elif (word_list[0] == "turtle"):
-            cowsay.turtle(args)
+            cowsay.turtle(arg)
         elif (word_list[0] == "tux"):
-            cowsay.tux(args)
+            cowsay.tux(arg)
         else:
-            cowsay.cow(og_args)
+            cowsay.cow(og_arg)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
