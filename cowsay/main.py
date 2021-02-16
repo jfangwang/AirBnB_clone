@@ -82,7 +82,7 @@ Daemon = '''
 Cow = r'''
 
    ^__^
-   (oo)\_______ 
+   (oo)\_______
    (__)\       )\/\
        ||----w |
        ||     ||
@@ -274,7 +274,7 @@ Turtle = '''
 
         '''
 
-Tux = ''' 
+Tux = '''
 
         .--.
        |o_o |
@@ -285,7 +285,6 @@ Tux = '''
     \\___)=(___/
 
     '''
-
 
 
 def string_processing(args):
@@ -657,8 +656,6 @@ def tux(args):
 
     for i in char_lines:
         print(' ' * flag + i)
-
-
 
 
 chars = [beavis, cheese, daemon, cow, dragon, ghostbusters, kitty, meow, milk,

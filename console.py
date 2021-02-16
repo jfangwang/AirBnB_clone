@@ -133,7 +133,6 @@ class HBNBCommand(cmd.Cmd):
                     instance_exist = 1
             if instance_exist == 0:
                 print("** no instance found **")
-            
 
 # ----------------------FUN_ADD_ONS---------------------------------------
     def do_clear(self, arg):
