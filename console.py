@@ -12,17 +12,20 @@ from models.base_model import BaseModel
 import cowsay
 import os
 
-class_dict = {"BaseModel": BaseModel, 
-                "State": State, 
-                "City": City, 
-                "Amenity": Amenity, 
-                "Place": Place, 
-                "Review": Review,
-                "User": User
-             }
+class_dict = {"BaseModel": BaseModel,
+              "State": State,
+              "City": City,
+              "Amenity": Amenity,
+              "Place": Place,
+              "Review": Review,
+              "User": User
+              }
+
+
 class HBNBCommand(Cmd):
     """HBNBC"""
     prompt = '(hbnb) '
+
     def do_quit(self, args):
         """Quit command to exit the program"""
         return True
@@ -62,7 +65,7 @@ class HBNBCommand(Cmd):
                 print(objdict[search])
             else:
                 print("** no instance found **")
-            
+
 # ----------------------ALL---------------------------------------
     def do_all(self, args):
         """Shows the contents of all instances"""
@@ -75,7 +78,7 @@ class HBNBCommand(Cmd):
                 print(storage.all()[a])
         else:
             print("** class doesn't exist **")
-            
+
 # ----------------------DESTROY---------------------------------------
     def do_destroy(self, args):
         """Deletes an instance based on the class name and id"""
@@ -91,7 +94,7 @@ class HBNBCommand(Cmd):
                 del objdict[search]
             else:
                 print("** no instance found **")
-        
+
 # ----------------------UPDATE---------------------------------------
     def do_update(self, args):
         """Updates an instance based on the class name and id"""
@@ -123,18 +126,20 @@ class HBNBCommand(Cmd):
                 print("** no instance found **")
         else:
             print("** class doesn't exist **")
-        
+
 # ----------------------FUN_ADD_ONS---------------------------------------
     def do_clear(self, args):
         """clear line"""
-        clear = lambda: os.system('clear') #on Linux System
+        def clear(): os.system('clear')
         clear()
 
     def help_cowsay(self):
         """cowsay help"""
         print("""USAGE: cowsay [cow_name] PHRASE""")
-        print("cow_name options:\nbeavis\ncheese\ndaemon\ncow (default)\ndragon\nghostbusters\nkitty\nmeow\nmilk\npig\nstegosaurus\nstimpy\nturkey\nturtle\ntux\n")
-    
+        print("cow_name options\nbeavis\ncheese\ndaemon\ncow(default)\n
+              dragon\nghostbusters\nkitty\nmeow\nmilk\npig\nstegosaurus\n
+              stimpy\nturkey\nturtle\ntux\n")
+
     def do_cowsay(self, args):
         """cowsay"""
         word_list = []
