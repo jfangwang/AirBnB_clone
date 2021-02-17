@@ -13,6 +13,17 @@ class test_place_class(unittest.TestCase):
         cls.place = Place()
         print("place object created")
 
-    def test_class(self):
-        """ Tests if class is instance of BaseModel and class is State"""
-        pass
+    def test_attr(self):
+        """ Tests if class attributes are correct types """
+        obj = self.place
+        self.assertIs(obj.user_id, str())
+        self.assertIs(obj.city_id, str())
+        self.assertIs(obj.name, str())
+        self.assertIs(obj.description, str())
+        self.assertIs(obj.number_rooms, int())
+        self.assertIs(obj.number_bathrooms, int())
+        self.assertIs(obj.max_guest, int())
+        self.assertIs(obj.price_by_night, int())
+        self.assertIs(type(obj.latitude), float)
+        self.assertIs(type(obj.longitude), float)
+        self.assertIs(type(obj.amenity_ids), list)
