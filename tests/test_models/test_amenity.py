@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 from models.amenity import Amenity
 from models.engine.file_storage import FileStorage
 
+
 class test_amenity_class(unittest.TestCase):
     """Unittest for Amenity class"""
     @classmethod

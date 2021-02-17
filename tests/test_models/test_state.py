@@ -4,6 +4,7 @@ import unittest
 from models.base_model import BaseModel
 from models.state import State
 
+
 class test_state_class(unittest.TestCase):
     """Unittest for state class"""
     @classmethod
