@@ -15,6 +15,7 @@ import os
 import shlex
 import sys
 import re
+import json
 
 class_dict = {"BaseModel": BaseModel,
               "State": State,
@@ -149,6 +150,7 @@ class HBNBCommand(cmd.Cmd):
         attr_list = []
         atrr_name = str()
         attr_value = str()
+        dict_obj = None
         if len(word_list) == 2:
             if re.search('show(.+)', word_list[1]):
                 id_num = word_list[1][slice(5, -1, 1)]
@@ -162,7 +164,20 @@ class HBNBCommand(cmd.Cmd):
                 if len(attr_list) >= 1:
                     id_num = attr_list[0]
                 if len(attr_list) >= 2:
-                    atrr_name = attr_list[1]
+                    try:
+                        dict_obj = json.loads(attr_list[1])
+                    except:
+                        pass
+                    if type(dict_obj) != dict:
+                        atrr_name = attr_list[1]
+                    else:
+                        for key in storage.all():
+                            temp = key.split(".")
+                            if id_num == temp[1]:
+                                for k in dict_obj:
+                                    self.onecmd("update {} {} {} {}".format(word_list[0], id_num, k, dict_obj[k]))
+                        return
+                                
                 if len(attr_list) >= 3:
                     attr_value = attr_list[2]
                 word_list[1] = word_list[1][slice(0, 7)] + ")"
