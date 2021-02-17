@@ -12,10 +12,10 @@ class Place(BaseModel):
     user_id = ""  # it will be the User.id of owner
     name = ""  # name of place
     description = ""  # description of place
-    number_rooms = int(0)  # Number of rooms listing has
-    number_bathrooms = int(0)  # Number of bathrooms listing has
-    max_guest = int(0)  # Max amount of guests listing can hold
-    price_by_night = int(0)  # Price per night of listing
-    latitude = float(0.0)  # Cords for locations
-    longitude = float(0.0)  # -------------------
-    amenity_ids = list()  # it will be the list of Amenity.id later
+    number_rooms = 0  # Number of rooms listing has
+    number_bathrooms = 0  # Number of bathrooms listing has
+    max_guest = 0  # Max amount of guests listing can hold
+    price_by_night = 0  # Price per night of listing
+    latitude = 0.0  # Cords for locations
+    longitude = 0.0  # -------------------
+    amenity_ids = []  # it will be the list of Amenity.id later

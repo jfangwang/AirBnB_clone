@@ -14,6 +14,7 @@ class test_city_class(unittest.TestCase):
         cls.city = City()
         print("city object created")
 
-    def test_class(self):
-        """ Tests if class is instance of BaseModel and class is State"""
-        pass
+    def test_attr(self):
+        """ Tests if class attributes are correct types """
+        self.assertIs(self.city.state_id, str())
+        self.assertIs(self.city.name, str())

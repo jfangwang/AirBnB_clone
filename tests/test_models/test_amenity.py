@@ -14,6 +14,6 @@ class test_amenity_class(unittest.TestCase):
         cls.amenity = Amenity()
         print("amenity object created")
 
-    def test_class(self):
-        """ Tests if class is instance of BaseModel and class is State"""
-        pass
+    def test_attr(self):
+        """ Tests if class attributes are correct types """
+        self.assertIs(self.amenity.name, str())
