@@ -3,7 +3,6 @@
 import unittest
 from models.base_model import BaseModel
 from models.state import State
-from models.engine.file_storage import FileStorage
 
 class test_state_class(unittest.TestCase):
     """Unittest for state class"""
@@ -13,6 +12,6 @@ class test_state_class(unittest.TestCase):
         cls.state = State()
         print("state object created")
 
-    def test_class(self):
-        """ Tests if class is instance of BaseModel and class is State"""
-        pass
+    def test_attr(self):
+        """ Tests if class attributes are correct types """
+        self.assertIs(self.state.name, str())
