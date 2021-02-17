@@ -145,7 +145,10 @@ class HBNBCommand(cmd.Cmd):
     def default(self, line):
         """Helper function to run <class>.method()"""
         word_list = line.split(".")
-        id_num = None
+        id_num = str()
+        attr_list = []
+        atrr_name = str()
+        attr_value = str()
         if len(word_list) == 2:
             if re.search('show(.+)', word_list[1]):
                 id_num = word_list[1][slice(5, -1, 1)]
@@ -154,9 +157,19 @@ class HBNBCommand(cmd.Cmd):
                 id_num = word_list[1][slice(8, -1, 1)]
                 word_list[1] = word_list[1][slice(0, 8)] + ")"
             if re.search('update(.+)', word_list[1]):
-                id_num = word_list[1][slice(7, -1, 1)]
+                attr_list = word_list[1][slice(7, -1, 1)]
+                attr_list = attr_list.split(",")
+                if len(attr_list) >= 1:
+                    id_num = attr_list[0]
+                if len(attr_list) >= 2:
+                    atrr_name = attr_list[1]
+                if len(attr_list) >= 3:
+                    attr_value = attr_list[2]
                 word_list[1] = word_list[1][slice(0, 7)] + ")"
-            if (word_list[0] in class_dict and
+            if (word_list[0] in class_dict and word_list[1] in func_dict and
+                    len(attr_list) > 0):
+                self.onecmd(func_dict[word_list[1]] + " " + word_list[0] + " " + id_num + " " + atrr_name + " " + attr_value)
+            elif (word_list[0] in class_dict and
                     word_list[1] in func_dict and id_num is None):
                 self.onecmd(func_dict[word_list[1]] + " " + word_list[0])
             elif word_list[0] in class_dict and word_list[1] in func_dict:
@@ -211,9 +224,9 @@ class HBNBCommand(cmd.Cmd):
 
     def help_cowsay(self):
         """cowsay help"""
-        print("""USAGE: cowsay [cow_name] PHRASE""")
-        print("cow_name options\nbeavis\ncheese\ndaemon\ncow(default)")
-        print("dragon\nghostbusters\nkitty\nmeow\nmilk\npig\nstegosaurus\n")
+        print("""\nUSAGE: cowsay [cow_name] PHRASE""")
+        print("COW_NAME OPTIONS\nbeavis\ncheese\ndaemon\ncow(default)")
+        print("dragon\nghostbusters\nkitty\nmeow\nmilk\npig\nstegosaurus")
         print("stimpy\nturkey\nturtle\ntux\n")
 
     def do_cowsay(self, arg):
