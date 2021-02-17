@@ -47,11 +47,17 @@ class HBNBCommand(cmd.Cmd):
     an input to be enters in the console.
 
     Custom Methods: Any method that begins with "do_" is a custom method and
-    shows up as a command in the console. Any method that begins with "help_"
-    is called formatted as 'help command'.
+    shows up as a command in the console. The doc string under a custom method
+    is used as the description when entering "help". Any method that begins
+    with "help_" corresponds to its "do_" method and is called when entering
+    "help command". Most of the time, it is used to print more info about a
+    command.
 
     CMD Methods: For this file, it is any method that does not start with
     "do_", assume it is a built-in method provided by the cmd module.
+
+    CMD Variables: Built-in instance variable that contain backend information
+    about the command line such as displaying a custom prompt.
 
     All public instance methods:
     do_quit(): Ends the program with a return statement ending the cmdloop()
@@ -90,6 +96,8 @@ class HBNBCommand(cmd.Cmd):
 
     do_cowsay() [class (optional)]: Implement cowsay with cowsay module.
 
+    CMD variables:
+    prompt: What to display as the prompt
     """
 
     prompt = '(hbnb) '
@@ -138,7 +146,7 @@ class HBNBCommand(cmd.Cmd):
 
 # ----------------------ALL---------------------------------------
     def do_all(self, arg):
-        """USAGE: all [class (option)], shows all instances"""
+        """USAGE: all [class (optional)], shows all instances"""
         cmd_arg = self.lastcmd
         word_list = arg.split()
         output_list = []
@@ -202,7 +210,7 @@ class HBNBCommand(cmd.Cmd):
 
 # ----------------------DEFAULT---------------------------------------
     def default(self, line):
-        """Helper function to run <class>.method()"""
+        """Helper function to run class.method()"""
         word_list = line.split(".")
         id_wrong = True
         id_num = str()
@@ -240,7 +248,7 @@ class HBNBCommand(cmd.Cmd):
                                     self.onecmd("update {} {} {} {}".
                                                 format(word_list[0], id_num,
                                                        k, dict_obj[k]))
-                        if id_wrong == True:
+                        if id_wrong:
                             print("** no instance found **")
                         return
                 if len(attr_list) >= 3:
@@ -294,7 +302,7 @@ class HBNBCommand(cmd.Cmd):
 
 # ----------------------COWSAY---------------------------------------
     def do_cowsay(self, arg):
-        """USAGE: cowsay [cow_name (option)], type 'help cowsay' for more"""
+        """USAGE: cowsay [cow_name (optional)], type 'help cowsay' for more"""
         word_list = []
         word = ""
         for char in arg:
