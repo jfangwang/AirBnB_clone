@@ -1,7 +1,16 @@
 #!/usr/bin/python3
-"""Console"""
-import cmd
-from models import storage
+"""
+Console:
+This file contains every function the console needs and runs based off running
+functions from BaseModel.
+"""
+import cmd    # Required to run the console
+import cowsay  # Cowsay for python
+import os     # ability to use OS dependent functionality
+import shlex  # used for split(), removed quotes if input had quotes
+import re     # Regular Expressions, used for search substrings with wildcards
+import json   # Used it load arg into dict.
+from models import storage              # Every else is from models
 from models.base_model import BaseModel
 from models.amenity import Amenity
 from models.city import City
@@ -10,13 +19,8 @@ from models.review import Review
 from models.state import State
 from models.user import User
 from models.base_model import BaseModel
-import cowsay
-import os
-import shlex
-import sys
-import re
-import json
 
+# Dictionary to store available and known classes
 class_dict = {"BaseModel": BaseModel,
               "State": State,
               "City": City,
@@ -25,6 +29,7 @@ class_dict = {"BaseModel": BaseModel,
               "Review": Review,
               "User": User
               }
+# Dictionary storing all commands, used for default()
 func_dict = {"create()": "create", "show()": "show", "destroy()": "destroy",
              "all()": "all", "update()": "update", "cowsay()": "cowsay",
              "count()": "count"
@@ -32,25 +37,77 @@ func_dict = {"create()": "create", "show()": "show", "destroy()": "destroy",
 
 
 class HBNBCommand(cmd.Cmd):
-    """HBNBC"""
+    """
+    HBNBCommand:
+    HBNBCommand is a class that relies on the cmd module imported above and
+    uses this to create an instance of a running command-line-interpreter.
+    The (cmd.Cmd) part is what creates this instance. At the bottom, you'll
+    see the HBNBCommand.cmdloop(). This keeps issuing a prompt and waits for
+    an input to be enters in the console.
+
+    Custom Methods: Any method that begins with "do_" is a custom method and
+    shows up as a command in the console. Any method that begins with "help_"
+    is called formatted as 'help command'.
+
+    CMD Methods: For this file, it is any method that does not start with
+    "do_", assume it is a built-in method provided by the cmd module.
+
+    All public instance methods:
+    do_quit(): Ends the program with a return statement ending the cmdloop()
+
+    do_EOF(): Also ends the program like do_quit()
+
+    emptyline(): Built-in method and is called when an empty line is entered.
+    Pass is implemented making sure nothing happens when nothing is entered.
+
+    do_create() [class]: Creates an instances of whatever class the user
+    provides. Instance is saved to file storage and prints the id on the next
+    line.
+
+    do_show() [class] [id]: Prints the string representation of a class given
+    class and id.
+
+    do_all() [class (optional)]: Prints all instances in string representation
+    if not given a class. If class is provided, it only shows the instances
+    of the given class.
+
+    do_destroy() [class] [id]: Deletes an instance if given class and id.
+
+    do_update() [class] [id] [attr_name] [attr_value]: Updates an instance if
+    given class, attr_name, attr_value. If instance does not have given
+    attr_name, it will add it as a new attr to the instance.
+
+    default(): Built-in method, gets called if command is not found. It then
+    checks if input is formatted as 'class.method()'. If not, it prints a
+    standard error message like normal.
+
+    count() [class]: Prints the number of instances of a given class.
+
+    do_clear(): Clears the terminal with the os module.
+
+    help_cowsay(): Provided a help page to cowsay.
+
+    do_cowsay() [class (optional)]: Implement cowsay with cowsay module.
+
+    """
 
     prompt = '(hbnb) '
 
     def do_quit(self, arg):
-        """Quit command to exit the program"""
+        """USAGE: quit, exits the console"""
         return True
 
     def do_EOF(self, arg):
-        """end of file"""
+        """USAGE: EOF, exits the console"""
         return True
 
     def emptyline(self):
-        """empty line"""
+        """Does nothing if nothing is entered"""
         pass
 
 # ----------------------CREATE---------------------------------------
     def do_create(self, arg):
-        """create an instance"""
+        """USAGE: create [class], creates an instance of given class"""
         if (len(arg) == 0):
             print("** class name missing **")
         elif arg in class_dict:
@@ -62,7 +119,7 @@ class HBNBCommand(cmd.Cmd):
 
 # ----------------------SHOW---------------------------------------
     def do_show(self, arg):
-        """Show contents of a class based on class and id"""
+        """USAGE: show [class] [id], shows instances in str representation"""
         word_list = arg.split()
         if (len(word_list) == 0):
             print("** class name missing **")
@@ -80,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
 
 # ----------------------ALL---------------------------------------
     def do_all(self, arg):
-        """Shows the contents of all instances"""
+        """USAGE: all [class (option)], shows all instances"""
         cmd_arg = self.lastcmd
         word_list = arg.split()
         output_list = []
@@ -99,7 +156,7 @@ class HBNBCommand(cmd.Cmd):
 
 # ----------------------DESTROY---------------------------------------
     def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id"""
+        """USAGE: destroy [class] [id], deletes an instance given class id"""
         word_list = arg.split()
         if (len(word_list) == 0):
             print("** class name missing **")
@@ -118,7 +175,7 @@ class HBNBCommand(cmd.Cmd):
 
 # ----------------------UPDATE---------------------------------------
     def do_update(self, arg):
-        """Updates an instance based on the class name and id"""
+        """USAGE: update [class] [id] [attr_name] [attr_value]"""
         untouchable = ["id", "created_at", "updated_at"]
         word_list = shlex.split(arg)
         instance_exist = 0
@@ -201,7 +258,7 @@ class HBNBCommand(cmd.Cmd):
 
 # ----------------------COUNT---------------------------------------
     def do_count(self, arg):
-        """Helper function to run <class>.method()"""
+        """USAGE: count [class], counts num of instances of given class"""
         arg = arg.split()
         count = 0
         if len(arg) == 0:
@@ -215,31 +272,13 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("class does not exist")
 
-# ----------------------USER---------------------------------------
-    def do_postcmd(self, stop, line):
-        """Helper function to run <class>.method()"""
-        word_list = line.split(".")
-        if len(word_list) == 2:
-            if word_list[0] in class_dict:
-                self.onecmd(word_list[1])
-
-# ----------------------TEST---------------------------------------
-    def do_test(self, arg):
-        """test"""
-        print("User")
-        print("ARG: {}".format(arg))
-        for key in storage.all():
-            print("OBJECT: {}".format(storage.all()[key]))
-            print("DIR: {}".format(storage.all()[key].__dir__()))
-            print("HASH: {}".format(storage.all()[key].__hash__()))
-            print("CLASS: {}".format(storage.all()[key].__class__.__name__))
-
-# ----------------------FUN_ADD_ONS---------------------------------------
+# ----------------------CLEAR---------------------------------------
     def do_clear(self, arg):
-        """clear line"""
+        """USAGE: clear, clears the console"""
         def clear(): os.system('clear')
         clear()
 
+# ----------------------HELP_COWSAY---------------------------------------
     def help_cowsay(self):
         """cowsay help"""
         print("""\nUSAGE: cowsay [cow_name] PHRASE""")
@@ -247,8 +286,9 @@ class HBNBCommand(cmd.Cmd):
         print("dragon\nghostbusters\nkitty\nmeow\nmilk\npig\nstegosaurus")
         print("stimpy\nturkey\nturtle\ntux\n")
 
+# ----------------------COWSAY---------------------------------------
     def do_cowsay(self, arg):
-        """cowsay"""
+        """USAGE: cowsay [cow_name (option)], type 'help cowsay' for more"""
         word_list = []
         word = ""
         for char in arg:
@@ -298,5 +338,12 @@ class HBNBCommand(cmd.Cmd):
         else:
             cowsay.cow(og_arg)
 
+# ----------------------MAIN---------------------------------------
+"""
+Python executes all of the code found in a file. This includes importing
+modules. This makes sure all the code found in all the imported modules
+does not get executed until it gets called properly by a function. The
+HBNBCommand().cmdloop() inits and starts the console.
+"""
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
