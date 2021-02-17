@@ -15,12 +15,11 @@ class test_base_model(unittest.TestCase):
          "created_at": "2017-09-28T21:07:25.047372", "name": "Holberton", "id": "ee49c413-023a-4b49-bd28-f2936c95460d"}
         
         cls.mb2 = BaseModel(**set_dict)
-        print("\nmb2 created\n")
+        print("mb2 created")
 
     def test_save(self):
         """ """
         self.mb2.save()
-        print("saved")
 
     def test_reload(self):
         """ """
