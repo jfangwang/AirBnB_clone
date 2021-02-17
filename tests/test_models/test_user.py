@@ -45,3 +45,11 @@ class test_user_model(unittest.TestCase):
         obj = User(**test_dict)
         obj_dict = obj.to_dict()
         self.assertEqual(obj_dict, test_dict)
+
+    def test_set_email(self):
+        """ tests if email class attribute can be set """
+        print("Email Before:")
+        print(self.user1.email)
+        print("Email After")
+        self.user1.email = "root"
+        print(self.user1.email)
