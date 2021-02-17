@@ -19,21 +19,16 @@ class test_file_storage(unittest.TestCase):
         """Method set up instances"""
         remove_file()
         print("setup")
-    
+
     def tearDown(self):
         """ Remove storage file at end of tests """
         remove_file()
 
-    def test_file_path(self):
-        """ checks if file_path is a string """
-        path = models.storage._FileStorage__file_path
-        self.assertEqual(type(path), str)
-    
     def test_file_objects(self):
         """ checks if __objects is a dict """
         objs = models.storage.all()
         self.assertEqual(type(objs), dict)
-    
+
     def test_new(self):
         """ """
         obj = BaseModel()
@@ -53,7 +48,7 @@ class test_file_storage(unittest.TestCase):
     def test_all(self):
         """ """
         pass
-    
+
     def test_serial(self):
         """ """
         pass
