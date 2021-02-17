@@ -10,6 +10,7 @@ import os     # ability to use OS dependent functionality
 import shlex  # used for split(), removed quotes if input had quotes
 import re     # Regular Expressions, used for search substrings with wildcards
 import json   # Used it load arg into dict.
+import ast    # Used to convert string representation to dict obj
 from models import storage              # Every else is from models
 from models.base_model import BaseModel
 from models.amenity import Amenity
@@ -217,12 +218,14 @@ class HBNBCommand(cmd.Cmd):
                 word_list[1] = word_list[1][slice(0, 8)] + ")"
             if re.search('update(.+)', word_list[1]):
                 attr_list = word_list[1][slice(7, -1, 1)]
-                attr_list = attr_list.split(",")
+                attr_list = attr_list.split(",", 1)
+                attr_list[1] = attr_list[1].strip()
                 if len(attr_list) >= 1:
                     id_num = attr_list[0]
                 if len(attr_list) >= 2:
                     try:
-                        dict_obj = json.loads(attr_list[1])
+                        # dict_obj = json.loads(attr_list[1])
+                        dict_obj = ast.literal_eval(str(attr_list[1]))
                     except:
                         pass
                     if type(dict_obj) != dict:
@@ -232,7 +235,6 @@ class HBNBCommand(cmd.Cmd):
                             temp = key.split(".")
                             if id_num == temp[1]:
                                 for k in dict_obj:
-                                    print(k, dict_obj[k])
                                     self.onecmd("update {} {} {} {}".
                                                 format(word_list[0], id_num,
                                                        k, dict_obj[k]))
