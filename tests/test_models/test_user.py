@@ -12,7 +12,7 @@ class test_user_model(unittest.TestCase):
         """Method set up instances"""
         cls.user1 = User()
         print("user1 created")
-    
+
     def test_attr(self):
         """ Tests if Class attribute values are strings """
         obj = self.user1
