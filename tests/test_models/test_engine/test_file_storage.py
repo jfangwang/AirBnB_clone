@@ -1,32 +1,59 @@
 #!/usr/bin/python3
 """unit test for base model"""
 import unittest
+import models
 from models.base_model import BaseModel
-from models.engine.file_storage import FileStorage
-from models.__init__ import storage
+import os
 
 
-class test_base_model(unittest.TestCase):
+def remove_file():
+    try:
+        os.remove("BaseModels.json")
+    except:
+        pass
+
+class test_file_storage(unittest.TestCase):
     """ """
     @classmethod
     def setUpClass(cls):
         """Method set up instances"""
-        set_dict = {"my_number": 89, "__class__": "BaseModel",
-                    "updated_at": "2017-09-28T21:07:25.047381",
-                    "created_at": "2017-09-28T21:07:25.047372",
-                    "name": "Holberton",
-                    "id": "ee49c413-023a-4b49-bd28-f2936c95460d"}
-        cls.mb2 = BaseModel(**set_dict)
-        print("mb2 created")
+        remove_file()
+        print("setup")
+    
+    def tearDown(self):
+        """ Remove storage file at end of tests """
+        remove_file()
+
+    def test_file_path(self):
+        """ checks if file_path is a string """
+        path = models.storage._FileStorage__file_path
+        self.assertEqual(type(path), str)
+    
+    def test_file_objects(self):
+        """ checks if __objects is a dict """
+        objs = models.storage.all()
+        self.assertEqual(type(objs), dict)
+    
+    def test_new(self):
+        """ """
+        obj = BaseModel()
+        dict_obj = models.storage.all()
+        self.assertEqual(dict_obj["BaseModel.{}".format(obj.id)], obj)
+        self.assertTrue(dict_obj["BaseModel.{}".format(obj.id)] is obj)
+        remove_file()
 
     def test_save(self):
         """ """
-        self.mb2.save()
+        pass
 
     def test_reload(self):
         """ """
         pass
 
-    def test_json(self):
+    def test_all(self):
+        """ """
+        pass
+    
+    def test_serial(self):
         """ """
         pass
