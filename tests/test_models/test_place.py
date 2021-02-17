@@ -5,7 +5,7 @@ from models.base_model import BaseModel
 from models.place import Place
 from models.engine.file_storage import FileStorage
 
-class test_amenity_class(unittest.TestCase):
+class test_place_class(unittest.TestCase):
     """Unittest for place class"""
     @classmethod
     def setUpClass(cls):
