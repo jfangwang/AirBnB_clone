@@ -204,6 +204,7 @@ class HBNBCommand(cmd.Cmd):
     def default(self, line):
         """Helper function to run <class>.method()"""
         word_list = line.split(".")
+        id_wrong = True
         id_num = str()
         attr_list = []
         atrr_name = str()
@@ -219,10 +220,10 @@ class HBNBCommand(cmd.Cmd):
             if re.search('update(.+)', word_list[1]):
                 attr_list = word_list[1][slice(7, -1, 1)]
                 attr_list = attr_list.split(",", 1)
-                attr_list[1] = attr_list[1].strip()
                 if len(attr_list) >= 1:
                     id_num = attr_list[0]
                 if len(attr_list) >= 2:
+                    attr_list[1] = attr_list[1].strip()
                     try:
                         # dict_obj = json.loads(attr_list[1])
                         dict_obj = ast.literal_eval(str(attr_list[1]))
@@ -234,10 +235,13 @@ class HBNBCommand(cmd.Cmd):
                         for key in storage.all():
                             temp = key.split(".")
                             if id_num == temp[1]:
+                                id_wrong = False
                                 for k in dict_obj:
                                     self.onecmd("update {} {} {} {}".
                                                 format(word_list[0], id_num,
                                                        k, dict_obj[k]))
+                        if id_wrong == True:
+                            print("** no instance found **")
                         return
                 if len(attr_list) >= 3:
                     attr_value = attr_list[2]
