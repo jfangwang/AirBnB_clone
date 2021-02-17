@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 from models.review import Review
 from models.engine.file_storage import FileStorage
 
+
 class test_amenity_class(unittest.TestCase):
     """Unittest for review class"""
     @classmethod

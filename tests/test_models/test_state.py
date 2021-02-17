@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 from models.state import State
 from models.engine.file_storage import FileStorage
 
+
 class test_state_class(unittest.TestCase):
     """Unittest for state class"""
     @classmethod

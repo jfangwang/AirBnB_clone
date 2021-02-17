@@ -13,6 +13,8 @@ from models.base_model import BaseModel
 import cowsay
 import os
 import shlex
+import sys
+import re
 
 class_dict = {"BaseModel": BaseModel,
               "State": State,
@@ -22,6 +24,10 @@ class_dict = {"BaseModel": BaseModel,
               "Review": Review,
               "User": User
               }
+func_dict = {"create()": "create", "show()": "show", "destroy()": "destroy",
+             "all()": "all", "update()": "update", "cowsay()": "cowsay",
+             "count()": "count"
+             }
 
 
 class HBNBCommand(cmd.Cmd):
@@ -74,6 +80,7 @@ class HBNBCommand(cmd.Cmd):
 # ----------------------ALL---------------------------------------
     def do_all(self, arg):
         """Shows the contents of all instances"""
+        cmd_arg = self.lastcmd
         word_list = arg.split()
         output_list = []
         if (len(word_list) == 0):
@@ -133,6 +140,68 @@ class HBNBCommand(cmd.Cmd):
                     instance_exist = 1
             if instance_exist == 0:
                 print("** no instance found **")
+
+# ----------------------DEFAULT---------------------------------------
+    def default(self, line):
+        """Helper function to run <class>.method()"""
+        word_list = line.split(".")
+        id_num = None
+        if len(word_list) == 2:
+            if re.search('show(.+)', word_list[1]):
+                id_num = word_list[1][slice(5, -1, 1)]
+                word_list[1] = word_list[1][slice(0, 5)] + ")"
+            if re.search('destroy(.+)', word_list[1]):
+                id_num = word_list[1][slice(8, -1, 1)]
+                word_list[1] = word_list[1][slice(0, 8)] + ")"
+            if re.search('update(.+)', word_list[1]):
+                id_num = word_list[1][slice(7, -1, 1)]
+                word_list[1] = word_list[1][slice(0, 7)] + ")"
+            if (word_list[0] in class_dict and
+                    word_list[1] in func_dict and id_num is None):
+                self.onecmd(func_dict[word_list[1]] + " " + word_list[0])
+            elif word_list[0] in class_dict and word_list[1] in func_dict:
+                self.onecmd(func_dict[word_list[1]] + " " + word_list[0] +
+                            " " + id_num)
+            else:
+                print("*** Unknown syntax: {}".format(line))
+        else:
+            print("*** Unknown syntax: {}".format(line))
+        return
+
+# ----------------------COUNT---------------------------------------
+    def do_count(self, arg):
+        """Helper function to run <class>.method()"""
+        arg = arg.split()
+        count = 0
+        if len(arg) == 0:
+            print("Missing Class Name")
+        else:
+            for key in storage.all():
+                if storage.all()[key].__class__.__name__ == arg[0]:
+                    count += 1
+            if count > 0:
+                print(count)
+            else:
+                print("class does not exist")
+
+# ----------------------USER---------------------------------------
+    def do_postcmd(self, stop, line):
+        """Helper function to run <class>.method()"""
+        word_list = line.split(".")
+        if len(word_list) == 2:
+            if word_list[0] in class_dict:
+                self.onecmd(word_list[1])
+
+# ----------------------TEST---------------------------------------
+    def do_test(self, arg):
+        """test"""
+        print("User")
+        print("ARG: {}".format(arg))
+        for key in storage.all():
+            print("OBJECT: {}".format(storage.all()[key]))
+            print("DIR: {}".format(storage.all()[key].__dir__()))
+            print("HASH: {}".format(storage.all()[key].__hash__()))
+            print("CLASS: {}".format(storage.all()[key].__class__.__name__))
 
 # ----------------------FUN_ADD_ONS---------------------------------------
     def do_clear(self, arg):
