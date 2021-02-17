@@ -175,15 +175,18 @@ class HBNBCommand(cmd.Cmd):
                             temp = key.split(".")
                             if id_num == temp[1]:
                                 for k in dict_obj:
-                                    self.onecmd("update {} {} {} {}".format(word_list[0], id_num, k, dict_obj[k]))
+                                    print(k, dict_obj[k])
+                                    self.onecmd("update {} {} {} {}".
+                                                format(word_list[0], id_num,
+                                                       k, dict_obj[k]))
                         return
-                                
                 if len(attr_list) >= 3:
                     attr_value = attr_list[2]
                 word_list[1] = word_list[1][slice(0, 7)] + ")"
             if (word_list[0] in class_dict and word_list[1] in func_dict and
                     len(attr_list) > 0):
-                self.onecmd(func_dict[word_list[1]] + " " + word_list[0] + " " + id_num + " " + atrr_name + " " + attr_value)
+                self.onecmd(func_dict[word_list[1]] + " " + word_list[0] +
+                            " " + id_num + " " + atrr_name + " " + attr_value)
             elif (word_list[0] in class_dict and
                     word_list[1] in func_dict and id_num is None):
                 self.onecmd(func_dict[word_list[1]] + " " + word_list[0])
