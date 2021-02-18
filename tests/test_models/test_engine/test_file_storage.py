@@ -34,7 +34,7 @@ class test_file_storage(unittest.TestCase):
 
     def test_file_objects(self):
         """ checks if __objects is a dict """
-        objs = models.storage.all()
+        objs = models.storage._FileStorage__objects
         self.assertEqual(type(objs), dict)
 
     def test_new(self):
