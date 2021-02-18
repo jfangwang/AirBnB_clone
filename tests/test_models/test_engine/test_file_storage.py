@@ -65,9 +65,17 @@ class test_file_storage(unittest.TestCase):
         self.assertEqual(after[key].to_dict(), before[key].to_dict())
         remove_file()
 
+    def test_all(self):
+        """TESTS IF ALL() method returns correct type/output"""
+        hold = models.storage.all()
+        self.assertEqual(type(hold), dict)
+        self.assertCountEqual(models.storage.all(), hold)
+
+# ------Unittests that dont pass checker----------------------------
     def test_reload(self):
         """checks if reload is succesful (NOT WORKING)"""
         obj = BaseModel()
+        obj.name = "Holberton"
         hold = models.storage.all()
         models.storage.save()
         models.storage.reload()
@@ -76,11 +84,16 @@ class test_file_storage(unittest.TestCase):
         self.assertEqual(after[key].to_dict(), hold[key].to_dict())
         remove_file()
 
-    def test_all(self):
-        """TESTS IF ALL() method returns correct type/output"""
+        obj = User()
+        obj.password = "root"
+        obj.email = "test@holbertonschool.com"
         hold = models.storage.all()
-        self.assertEqual(type(hold), dict)
-        self.assertCountEqual(models.storage.all(), hold)
+        models.storage.save()
+        models.storage.reload()
+        after = models.storage.all()
+        key = "User.{}".format(obj.id)
+        self.assertEqual(after[key].to_dict(), hold[key].to_dict())
+        remove_file()
 
     def test_BaseModel_save(self):
         """NOT WORKING"""
