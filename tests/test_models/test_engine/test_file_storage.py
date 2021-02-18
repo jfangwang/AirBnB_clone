@@ -14,12 +14,28 @@ from models.place import Place
 from models.review import Review
 
 
+# List to store available and known classes
+class_list = ["BaseModel", "State", "City", "Amenity", "Place", "Review",
+              "User"
+              ]
+# Dictionary to store available and known classes
+class_dict = {"BaseModel": BaseModel,
+              "State": State,
+              "City": City,
+              "Amenity": Amenity,
+              "Place": Place,
+              "Review": Review,
+              "User": User
+              }
+
+
 def remove_file():
     try:
         os.remove("BaseModels.json")
         models.storage.reload()
     except:
         pass
+
 
 class test_file_storage(unittest.TestCase):
     """ """
@@ -73,23 +89,43 @@ class test_file_storage(unittest.TestCase):
         after = models.storage.all()
         self.assertCountEqual(models.storage.all(), hold)
 
+    def test_reload_empty_file(self):
+        """Test to reload an empty file"""
+        before = models.storage.all()
+        models.storage.save()
+        models.storage.reload()
+        after = models.storage.all()
+        self.assertEqual(before, after)
+
+    def test_reload_no_file(self):
+        """Test to reload no existing file"""
+        remove_file()
+        self.assertEquals(None, models.storage.reload())
+
     def test_all(self):
         """TESTS IF ALL() method returns correct type/output"""
         hold = models.storage.all()
         self.assertEqual(type(hold), dict)
         self.assertCountEqual(models.storage.all(), hold)
 
-    def test_BaseModel_save(self):
-        """NOT WORKING"""
-        obj = BaseModel()
-        hold_before = obj.updated_at
-        obj.save()
-        key = "BaseModel.{}".format(obj.id)
-        with open("BaseModels.json", mode="r",
+    def test_all_classes_save(self):
+        """Test all classes.save()"""
+        for key in class_dict:
+            obj = class_dict[key]()
+            hold_before = obj.updated_at
+            obj.save()
+            key = "{}.{}".format(key, obj.id)
+            with open("BaseModels.json", mode="r",
                       encoding="utf-8") as file:
-                json_from = json.load(file)
-                self.assertEqual(json_from[key], obj.to_dict())
-        hold_after = obj.updated_at
-        self.assertIs(obj.updated_at.__class__, datetime)
-        self.assertNotEqual(hold_before, hold_after)
-        remove_file()
+                    json_from = json.load(file)
+                    self.assertEqual(json_from[key], obj.to_dict())
+                    self.assertIn(key, json_from)
+            hold_after = obj.updated_at
+            self.assertIs(obj.updated_at.__class__, datetime)
+            self.assertNotEqual(hold_before, hold_after)
+            remove_file()
+
+    def test_save_no_file(self):
+        """Trying to save no existent file"""
+        with self.assertRaises(TypeError):
+            models.storage.save(1)
