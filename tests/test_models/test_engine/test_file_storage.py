@@ -47,7 +47,7 @@ class test_file_storage(unittest.TestCase):
         obj = BaseModel()
         obj.name = "Holberton"
         obj.my_number = 89
-        obj.save()
+        models.storage.save()
         self.assertEqual(os.path.isfile("BaseModels.json"), True)
         remove_file()
 
