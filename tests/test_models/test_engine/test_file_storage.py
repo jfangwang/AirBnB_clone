@@ -65,6 +65,9 @@ class test_file_storage(unittest.TestCase):
         self.assertEqual(type(hold), dict)
         self.assertCountEqual(models.storage.all(), hold)
 
-    def test_serial(self):
+    def test_key_dict(self):
         """ """
+        obj = BaseModel()
+        cool = models.storage.all()
+        self.assertTrue("BaseModel.{}".format(obj.id) in cool)
         pass
