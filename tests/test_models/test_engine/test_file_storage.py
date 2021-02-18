@@ -81,13 +81,46 @@ class test_file_storage(unittest.TestCase):
         self.assertEqual(after[key].to_dict(), before[key].to_dict())
         remove_file()
 
+    def test_all(self):
+        """TESTS IF ALL() method returns correct type/output"""
+        hold = models.storage.all()
+        self.assertEqual(type(hold), dict)
+        self.assertCountEqual(models.storage.all(), hold)
+
+# ------Unittests that dont pass checker----------------------------
     def test_reload(self):
         """checks if reload is succesful (NOT WORKING)"""
+        obj = BaseModel()
+        obj.name = "Holberton"
         hold = models.storage.all()
         models.storage.save()
         models.storage.reload()
         after = models.storage.all()
-        self.assertCountEqual(models.storage.all(), hold)
+        key = "BaseModel.{}".format(obj.id)
+        self.assertEqual(after[key].to_dict(), hold[key].to_dict())
+        objs = models.storage._FileStorage__objects
+        self.assertEqual(type(objs), dict)
+        remove_file()
+
+        obj = User()
+        obj.password = "root"
+        obj.email = "test@holbertonschool.com"
+        hold = models.storage.all()
+        models.storage.save()
+        models.storage.reload()
+        after = models.storage.all()
+        key = "User.{}".format(obj.id)
+        self.assertEqual(after[key].to_dict(), hold[key].to_dict())
+        objs = models.storage._FileStorage__objects
+        self.assertEqual(type(objs), dict)
+        remove_file()
+
+    def test_BaseModel_save(self):
+        """NOT WORKING"""
+        obj = BaseModel()
+        obj.save()
+        self.assertEqual(os.path.isfile("BaseModels.json"), True)
+        remove_file()
 
     def test_reload_empty_file(self):
         """Test to reload an empty file"""
@@ -101,12 +134,6 @@ class test_file_storage(unittest.TestCase):
         """Test to reload no existing file"""
         remove_file()
         self.assertEquals(None, models.storage.reload())
-
-    def test_all(self):
-        """TESTS IF ALL() method returns correct type/output"""
-        hold = models.storage.all()
-        self.assertEqual(type(hold), dict)
-        self.assertCountEqual(models.storage.all(), hold)
 
     def test_all_classes_save(self):
         """Test all classes.save()"""
