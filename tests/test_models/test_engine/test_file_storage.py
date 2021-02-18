@@ -67,11 +67,14 @@ class test_file_storage(unittest.TestCase):
 
     def test_reload(self):
         """checks if reload is succesful (NOT WORKING)"""
+        obj = BaseModel()
         hold = models.storage.all()
         models.storage.save()
         models.storage.reload()
         after = models.storage.all()
-        self.assertCountEqual(models.storage.all(), hold)
+        key = "BaseModel.{}".format(obj.id)
+        self.assertEqual(after[key].to_dict(), hold[key].to_dict())
+        remove_file()
 
     def test_all(self):
         """TESTS IF ALL() method returns correct type/output"""
