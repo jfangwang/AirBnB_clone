@@ -4,11 +4,20 @@ import unittest
 import models
 from models.base_model import BaseModel
 import os
+import json
+from datetime import datetime
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 def remove_file():
     try:
         os.remove("BaseModels.json")
+        models.storage.reload()
     except:
         pass
 
@@ -19,7 +28,7 @@ class test_file_storage(unittest.TestCase):
         """Method set up instances"""
         remove_file()
         print("setup")
-    
+
     def tearDown(self):
         """ Remove storage file at end of tests """
         remove_file()
@@ -28,12 +37,12 @@ class test_file_storage(unittest.TestCase):
         """ checks if file_path is a string """
         path = models.storage._FileStorage__file_path
         self.assertEqual(type(path), str)
-    
+
     def test_file_objects(self):
         """ checks if __objects is a dict """
-        objs = models.storage.all()
+        objs = models.storage._FileStorage__objects
         self.assertEqual(type(objs), dict)
-    
+
     def test_new(self):
         """ """
         obj = BaseModel()
@@ -43,17 +52,44 @@ class test_file_storage(unittest.TestCase):
         remove_file()
 
     def test_save(self):
-        """ """
-        pass
+        """Checks if save is succesful"""
+        obj = BaseModel()
+        obj.name = "Holberton"
+        obj.my_number = 89
+        before = models.storage.all()
+        models.storage.save()
+        self.assertEqual(os.path.isfile("BaseModels.json"), True)
+        models.storage.reload()
+        after = models.storage.all()
+        key = "BaseModel.{}".format(obj.id)
+        self.assertEqual(after[key].to_dict(), before[key].to_dict())
+        remove_file()
 
     def test_reload(self):
-        """ """
-        pass
+        """checks if reload is succesful (NOT WORKING)"""
+        hold = models.storage.all()
+        models.storage.save()
+        models.storage.reload()
+        after = models.storage.all()
+        self.assertCountEqual(models.storage.all(), hold)
 
     def test_all(self):
-        """ """
-        pass
-    
-    def test_serial(self):
-        """ """
-        pass
+        """TESTS IF ALL() method returns correct type/output"""
+        hold = models.storage.all()
+        self.assertEqual(type(hold), dict)
+        self.assertCountEqual(models.storage.all(), hold)
+
+    def test_BaseModel_save(self):
+        """NOT WORKING"""
+        obj = BaseModel()
+        hold_before = obj.updated_at
+        obj.save()
+        key = "BaseModel.{}".format(obj.id)
+        with open("BaseModels.json", mode="r",
+                      encoding="utf-8") as file:
+                json_from = json.load(file)
+                self.assertEqual(json_from[key], obj.to_dict())
+        hold_after = obj.updated_at
+        self.assertIs(obj.updated_at.__class__, datetime)
+        self.assertNotEqual(hold_before, hold_after)
+        remove_file()
