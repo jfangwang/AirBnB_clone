@@ -6,6 +6,12 @@ from models.base_model import BaseModel
 import os
 import json
 from datetime import datetime
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 def remove_file():
@@ -78,13 +84,3 @@ class test_file_storage(unittest.TestCase):
         obj = BaseModel()
         cool = models.storage.all()
         self.assertTrue("BaseModel.{}".format(obj.id) in cool)
-
-    def test_BaseModel_save(self):
-        """ """
-        obj = BaseModel()
-        hold_before = obj.updated_at
-        obj.save()
-        hold_after = obj.updated_at
-        self.assertIs(obj.updated_at.__class__, datetime)
-        self.assertNotEqual(hold_before, hold_after)
-        remove_file()

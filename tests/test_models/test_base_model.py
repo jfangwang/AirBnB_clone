@@ -48,6 +48,7 @@ class test_base_model(unittest.TestCase):
         before_upd = self.mb1.to_dict()
         self.mb1.save()
         after_upd = self.mb1.to_dict()
+        self.assertIs(self.mb1.updated_at.__class__, datetime)
         self.assertNotEqual(after_upd["updated_at"], before_upd["updated_at"])
 
     def test_kwargs(self):
