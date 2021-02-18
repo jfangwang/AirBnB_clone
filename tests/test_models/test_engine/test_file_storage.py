@@ -82,6 +82,8 @@ class test_file_storage(unittest.TestCase):
         after = models.storage.all()
         key = "BaseModel.{}".format(obj.id)
         self.assertEqual(after[key].to_dict(), hold[key].to_dict())
+        objs = models.storage._FileStorage__objects
+        self.assertEqual(type(objs), dict)
         remove_file()
 
         obj = User()
@@ -93,6 +95,8 @@ class test_file_storage(unittest.TestCase):
         after = models.storage.all()
         key = "User.{}".format(obj.id)
         self.assertEqual(after[key].to_dict(), hold[key].to_dict())
+        objs = models.storage._FileStorage__objects
+        self.assertEqual(type(objs), dict)
         remove_file()
 
     def test_BaseModel_save(self):
