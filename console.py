@@ -5,7 +5,6 @@ This file contains every function the console needs and runs based off running
 functions from BaseModel.
 """
 import cmd    # Required to run the console
-import cowsay  # Cowsay for python
 import os     # ability to use OS dependent functionality
 import shlex  # used for split(), removed quotes if input had quotes
 import re     # Regular Expressions, used for search substrings with wildcards
@@ -291,66 +290,6 @@ class HBNBCommand(cmd.Cmd):
         """USAGE: clear, clears the console"""
         def clear(): os.system('clear')
         clear()
-
-# ----------------------HELP_COWSAY---------------------------------------
-    def help_cowsay(self):
-        """cowsay help"""
-        print("""\nUSAGE: cowsay [cow_name] PHRASE""")
-        print("COW_NAME OPTIONS\nbeavis\ncheese\ndaemon\ncow(default)")
-        print("dragon\nghostbusters\nkitty\nmeow\nmilk\npig\nstegosaurus")
-        print("stimpy\nturkey\nturtle\ntux\n")
-
-# ----------------------COWSAY---------------------------------------
-    def do_cowsay(self, arg):
-        """USAGE: cowsay [cow_name (optional)], type 'help cowsay' for more"""
-        word_list = []
-        word = ""
-        for char in arg:
-            if char == " ":
-                word_list.append(word)
-                word = ""
-            else:
-                word += char
-        word_list.append(word)
-        og_arg = arg
-        arg = ""
-        for index in range(0, len(word_list)):
-            if (index != 0):
-                arg += word_list[index]
-            if (index < len(word_list) - 1):
-                arg += " "
-        if (word_list[0] == "beavis"):
-            cowsay.beavis(arg)
-        elif (word_list[0] == "cheese"):
-            cowsay.cheese(arg)
-        elif (word_list[0] == "daemon"):
-            cowsay.daemon(arg)
-        elif (word_list[0] == "cow"):
-            cowsay.cow(arg)
-        elif (word_list[0] == "dragon"):
-            cowsay.dragon(arg)
-        elif (word_list[0] == "ghostbusters"):
-            cowsay.ghostbusters(arg)
-        elif (word_list[0] == "kitty"):
-            cowsay.kitty(arg)
-        elif (word_list[0] == "meow"):
-            cowsay.meow(arg)
-        elif (word_list[0] == "milk"):
-            cowsay.milk(arg)
-        elif (word_list[0] == "pig"):
-            cowsay.pig(arg)
-        elif (word_list[0] == "stegosaurus"):
-            cowsay.stegosaurus(arg)
-        elif (word_list[0] == "stimpy"):
-            cowsay.stimpy(arg)
-        elif (word_list[0] == "turkey"):
-            cowsay.turkey(arg)
-        elif (word_list[0] == "turtle"):
-            cowsay.turtle(arg)
-        elif (word_list[0] == "tux"):
-            cowsay.tux(arg)
-        else:
-            cowsay.cow(og_arg)
 
 # ----------------------MAIN---------------------------------------
 """
