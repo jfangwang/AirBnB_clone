@@ -34,7 +34,7 @@ class command_prompt(unittest.TestCase):
         """test help"""
         answer = ("Documented commands (type help <topic>):\n"
                   "========================================\n"
-                  "EOF  all  clear  count  cowsay  create  destroy  help  "
+                  "EOF  all  clear  count  create  destroy  help  "
                   "quit  show  update")
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("help")
