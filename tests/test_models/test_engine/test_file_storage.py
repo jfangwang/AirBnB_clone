@@ -72,9 +72,18 @@ class test_file_storage(unittest.TestCase):
         self.assertEqual(type(hold), dict)
         self.assertCountEqual(models.storage.all(), hold)
 
-    def test_key_dict(self):
+    def test_FileStorage__objects(self):
         """ """
         obj = BaseModel()
         cool = models.storage.all()
         self.assertTrue("BaseModel.{}".format(obj.id) in cool)
-        pass
+
+    def test_BaseModel_save(self):
+        """ """
+        obj = BaseModel()
+        obj.save()
+        obj.name = "Holberton"
+        obj.my_number = 89
+        obj.save()
+        self.assertEqual(os.path.isfile("BaseModels.json"), True)
+        remove_file()
