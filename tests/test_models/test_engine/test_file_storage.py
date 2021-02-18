@@ -4,11 +4,13 @@ import unittest
 import models
 from models.base_model import BaseModel
 import os
+import json
 
 
 def remove_file():
     try:
         os.remove("BaseModels.json")
+        models.storage.reload()
     except:
         pass
 
@@ -47,8 +49,13 @@ class test_file_storage(unittest.TestCase):
         obj = BaseModel()
         obj.name = "Holberton"
         obj.my_number = 89
+        before = models.storage.all()
         models.storage.save()
         self.assertEqual(os.path.isfile("BaseModels.json"), True)
+        models.storage.reload()
+        after = models.storage.all()
+        key = "BaseModel.{}".format(obj.id)
+        self.assertEqual(after[key].to_dict(), before[key].to_dict())
         remove_file()
 
     def test_reload(self):
