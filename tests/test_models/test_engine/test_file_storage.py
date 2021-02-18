@@ -24,6 +24,11 @@ class test_file_storage(unittest.TestCase):
         """ Remove storage file at end of tests """
         remove_file()
 
+    def test_file_path(self):
+        """ checks if file_path is a string """
+        path = models.storage._FileStorage__file_path
+        self.assertEqual(type(path), str)
+
     def test_file_objects(self):
         """ checks if __objects is a dict """
         objs = models.storage.all()
@@ -38,8 +43,13 @@ class test_file_storage(unittest.TestCase):
         remove_file()
 
     def test_save(self):
-        """ """
-        pass
+        """Checks if save is succesful"""
+        obj = BaseModel()
+        obj.name = "Holberton"
+        obj.my_number = 89
+        obj.save()
+        self.assertEqual(os.path.isfile("BaseModels.json"), True)
+        remove_file()
 
     def test_reload(self):
         """ """
