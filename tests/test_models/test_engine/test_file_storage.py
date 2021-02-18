@@ -81,9 +81,8 @@ class test_file_storage(unittest.TestCase):
     def test_BaseModel_save(self):
         """ """
         obj = BaseModel()
+        hold_before = obj.updated_at
         obj.save()
-        obj.name = "Holberton"
-        obj.my_number = 89
-        obj.save()
-        self.assertEqual(os.path.isfile("BaseModels.json"), True)
+        hold_after = obj.updated_at
+        self.assertNotEqual(hold_before, hold_after)
         remove_file()
