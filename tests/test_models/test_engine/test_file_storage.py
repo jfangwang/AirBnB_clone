@@ -5,6 +5,7 @@ import models
 from models.base_model import BaseModel
 import os
 import json
+from datetime import datetime
 
 
 def remove_file():
@@ -84,5 +85,6 @@ class test_file_storage(unittest.TestCase):
         hold_before = obj.updated_at
         obj.save()
         hold_after = obj.updated_at
+        self.assertIs(obj.updated_at.__class__, datetime)
         self.assertNotEqual(hold_before, hold_after)
         remove_file()
