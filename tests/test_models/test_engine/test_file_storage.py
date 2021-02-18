@@ -52,7 +52,7 @@ class test_file_storage(unittest.TestCase):
         remove_file()
 
     def test_reload(self):
-        """checks if reload is succesful"""
+        """checks if reload is succesful (NOT WORKING)"""
         hold = models.storage.all()
         models.storage.save()
         models.storage.reload()
@@ -60,8 +60,10 @@ class test_file_storage(unittest.TestCase):
         self.assertCountEqual(models.storage.all(), hold)
 
     def test_all(self):
-        """ """
-        pass
+        """TESTS IF ALL() method returns correct type/output"""
+        hold = models.storage.all()
+        self.assertEqual(type(hold), dict)
+        self.assertCountEqual(models.storage.all(), hold)
 
     def test_serial(self):
         """ """
