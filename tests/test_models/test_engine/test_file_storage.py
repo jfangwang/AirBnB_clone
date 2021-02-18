@@ -52,8 +52,12 @@ class test_file_storage(unittest.TestCase):
         remove_file()
 
     def test_reload(self):
-        """ """
-        pass
+        """checks if reload is succesful"""
+        hold = models.storage.all()
+        models.storage.save()
+        models.storage.reload()
+        after = models.storage.all()
+        self.assertCountEqual(models.storage.all(), hold)
 
     def test_all(self):
         """ """
