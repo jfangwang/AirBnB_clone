@@ -8,12 +8,6 @@ body {
     margin-bottom: 30px;
     text-align: center;
 }
-.filters {
-    color: white;
-    height: 70px;
-    width: 100%;
-    border: 1px solid #DDDDDD;
-}
 button {
     background-color:#FF5A5F;
     font-size: 18px;
@@ -24,4 +18,28 @@ button {
     float: right;
     margin-top: 10px;
     margin-right: 10px;
+}
+.locations {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    height: 100%;
+    width: 25%;
+    border-right: 1px solid #DDDDDD;
+    text-align: center;
+}
+ .amenities {
+     display: flex;
+     flex-direction: row;
+     margin-top: 10px;
+     height: 100%;
+     width: 25%;
+     text-align: center;
+ }
+h3 {
+    font-weight: 600;
+}
+h4 {
+    font-weight: 400;
+    font-size: 14px;
 }
