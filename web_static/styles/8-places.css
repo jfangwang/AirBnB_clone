@@ -20,6 +20,10 @@ section.places h2 {
     align-items: center;
     margin-top: 0px;
 }
+footer {
+    position: relative;
+    bottom: 0;
+}
 .places{
     display: flex;
     flex-wrap: wrap;
