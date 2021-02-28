@@ -23,4 +23,5 @@ section.places h2 {
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
+    margin-left: 30px;
 }
